@@ -115,22 +115,9 @@ The surrogate key approach provides a **reliable, production-style solution** fo
 
 The pipeline is orchestrated through `main.py`, handling **static** and **dynamic** tables differently.  
 
-```mermaid
-flowchart TD
-    A[Start: main.py] --> B[Fetch max IDs from BigQuery]
+<img width="2280" height="3840" alt="Untitled diagram _ Mermaid Chart-2025-09-30-213931" src="https://github.com/user-attachments/assets/82f816dd-5b68-40bb-99d9-8b82b32a0df9" />  
 
-    %% Branch for static table changes
-    B --> C{"Change in Static tables: plans, products, discounts?"}
-    C -->|Yes| D["Append static tables: plans, products, discounts along with dynamic tables"]
-    C -->|No| E["Skip static tables, Only append dynamic tables"]
-
-    %% Both paths lead to dynamic
-    D --> F["Generate new rows using start_id = MAX(id)+1"]
-    E --> F
-
-    F --> G["Append tables to bigquery dataset"]
-    G --> H[End]
-```   
+  
 #### Pipeline Guarantees
 - **Idempotent behavior** → running the same load twice will not corrupt data.  
 - **Referential integrity** → all relationships between tables remain valid.  
